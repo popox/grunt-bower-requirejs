@@ -97,6 +97,17 @@ module.exports = function (grunt) {
 								main = [path.basename(val).replace(/js$/, '') + '.js'];
 							}
 
+							// look for main attribute in the package.json file
+							var pjson = '';
+							try {
+								pjson = require(val + '/package.json');
+							} catch (e) {
+								console.warn(e);
+							}
+							if (pjson && pjson.main) {
+								main = [pjson.main];
+							}
+
 							obj[key] = main.length === 1 ? path.join(val, main[0]) : val;
 						}
 					});
